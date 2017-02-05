@@ -1,3 +1,16 @@
+<script type="application/ld+json">
+{
+  "@type": "Article",
+  "headline": "很高心没有猝死 - 我的 2016 年总结",
+  "name": "report-of-2016",
+  "url": "https://github.com/cnlon/posts/edit/master/report-of-2016.md",
+  "dateCreated": "2016-12-31",
+  "dateModified": "2017-02-06",
+  "datePublished": "2016-12-31"
+}
+</script>
+
+
 现在是 2016 年 12 月 31 日晚，**很高兴我没有猝死**。
 
 想弥补耽搁的几年，过去一年里，我几乎一直坚持着 9117（周一至周五每天 9 点半至 11 点半，周六、日 12 点 至 24 点）。

@@ -1,3 +1,16 @@
+<script type="application/ld+json">
+{
+  "@type": "Article",
+  "headline": "CSS 控制打印样式",
+  "name": "css-print",
+  "url": "https://github.com/cnlon/posts/blob/master/css-print.md",
+  "dateCreated": "2016-01-31",
+  "dateModified": "2017-02-06",
+  "datePublished": "2016-01-31"
+}
+</script>
+
+
 本文主要讲解如何使用 CSS 控制打印样式
 
 ## @media
@@ -46,5 +59,3 @@
 ## @page
 
 // 待续...
-
-[CSS Printing - @media Rule](https://www.tutorialspoint.com/css/css_printing.htm)
