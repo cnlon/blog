@@ -10,7 +10,7 @@
 }
 </script>
 
-本文主要讲解如何控制打印样式。
+本文主要讲解如何使用 CSS 控制打印样式。
 
 ## 简介
 
@@ -26,7 +26,7 @@
 
 ![页面打印区域和不可打印区域](https://www.w3.org/TR/css3-page/PageSheet.png)
 
-页面盒子 (Page Box) 是一个由长边 (Long Edge) 和短边 (Short Edge) 组成的矩形。长边 (或短边) 的方向决定了页面朝向 (Page Orientation)，长边是垂直方向，则页面朝向为纵向 (Portrait Orientation)，反之为横向 (Landscape Orientation)。
+页面盒子 (Page Box) 是一个由长边 (Long Edge) 和短边 (Short Edge) 组成的矩形。长边的方向决定了页面朝向 (Page Orientation)，长边是垂直方向，则页面朝向为纵向 (Portrait Orientation)，反之为横向 (Landscape Orientation)。
 
 CSS 打印无法指定文档是否为双面打印 (Duplex Printing)，是否双面打印应该通过用户代理指定。不管是否双面打印，CSS 打印总是包含左页和右页 (分别通过 `:left`, `:right` 指定) 。（或者说 CSS 打印假定所有文档是双面打印）
 
@@ -38,27 +38,28 @@ CSS 打印无法指定文档是否为双面打印 (Duplex Printing)，是否双�
 
 其中内容区域和外边距有着特殊的功能：
 
-- 内容区域也叫页面区域 (page area)，第一页的页面区域边界构成了文档的初始的包含块 ([Containing Block])。
-- 外边距被分成了 16 个外边距盒子 (page-margin boxes)。每个外边距盒子都有自己的外边距、边框、内边距和内容区域。
+- 内容区域也叫页面区域 (Page Area)，第一页的页面区域边界构成了文档的初始的包含块 ([Containing Block])
+- 页面外边距区域是透明的，环绕在页面区域周围。在 CSS3 中，外边距被分成了 16 个外边距盒子 (Page-Margin Boxes)，用于创建页眉和页脚，详见下文 <a href="#page-margin-boxes">页面外边距盒子</a>
 
-
-
-页面进度 (Page Progression)方向 是文档被分隔后的页面的排列方向。比如：现代中文页面进度是从左至右；而古代中文的页面进度是从右至左。可以通过设置根元素 (root element) 的 `driection` 和 `writing-mode` 属性来改变页面进度。
+页面进度 (Page Progression)方向 是文档被分隔后的页面的排列方向。比如：现代中文页面进度是多数从左至右；而古代中文的页面进度则相反。可以通过设置根元素 (root element) 的 `direction` 和 `writing-mode` 属性来改变页面进度。
 
 页面的“第一页”是左页还是右页，可以由页面进度的方向决定，当页面进度方向为从左至右时，第一页是右页；反之为左页。（事实上也可以通过设置根元素的 `break-before` 属性来强制改变第一页是左页还是右页）
 
-## 使用 CSS 分页
+## 引入打印样式的三种方式
 
-### 引入分页样式
-
-在 CSS 中使用 @media print
+在 CSS 中使用 `@media print`
 
 ```css
 @media print {
-  body {
-    /* 国家标准公文页边距 GB/T 9704-2012 */
-    margin: 3.7cm 2.7cm 3.5cm;
-  }
+    body {
+        background-color: white;
+    }
+    img {
+        visibility: hidden;
+    }
+    a::after {
+        content: "(" attr(href) ")"; /* 所有链接后显示链接地址 */
+    }
 }
 ```
 
@@ -74,29 +75,64 @@ CSS 打印无法指定文档是否为双面打印 (Duplex Printing)，是否双�
 <link rel="stylesheet" media="print" href="my-print-style.css">
 ```
 
-### 使用 @page
+在 `@media print` 或 my-print-style.css 中，可以自由的修改大部分样式。
 
-当希望改变页面大小、方向和边距等，就需要用到 `@page` 了。
+## 使用 @page
 
-`@page` 语法如下：
+在打印媒介下可以自定义很多样式，当希望改变页面大小、边距等，就需要用到 `@page` 了。页面上下文 (Page Context) 中仅支持部分 CSS 属性，支持的属性有：`margin`、`size`、`marks`、`bleed` 以及页面外边距盒子，不支持的属性将会被忽略。
 
 ```css
-@page :pseudo-class {
+@page {
     size: A4;
-    margin: 3.7cm 2.6cm 3.5cm;
+    margin: 3.7cm 2.6cm 3.5cm; /* 国家标准公文页边距 GB/T 9704-2012 */
 }
 ```
 
-其中支持的伪类有：
-`:left``:right``:first`
-`:blank`
+#### <a name="page-margin-boxes"></a>页面外边距盒子 (CSS3)
+
+页面的外边距被分成了 16 个页面外边距盒子。每个外边距盒子都有自己的外边距、边框、内边距和内容区域。页面外边距盒子用于创建页眉、页脚，页眉和页脚是页面的一部分，用于补充更多信息，如页码或标题。
+
+![page-margin-boxes](http://diethardsteiner.github.io/images/css-for-print/margin-boxes.png)
+
+页面外边距盒子需要在 `@page` 下使用，使用起来和伪类类似，也包含 `content` 属性。
+
+```css
+@page {
+    /* 页面内容区域底部添加一条 1px 的灰线 */
+    @bottom-left, @bottom-center, @bottom-right {
+        border-top: 1px solid gray;
+    }
+    
+    /* 页脚中间显示格式如 "第 3 页" 的页码 */
+    @bottom-center {
+        content: "第" counter(page) "页";
+    }
+}
+```
+
+#### 属性
+**`margin`** (CSS2.1)
+
+`margin` 系列属性（`margin-top`、`margin-right`、`margin-bottom`、`margin-left` 和 `margin`）用于指定页面外边距大小。在 CSS2.1 中，页面上下文中只支持 `margin` 系列属性，且因为页面上下文中没有字体的概念，`margin` 系列属性的值的单位不支持 `em` 和 `ex`。
+
+**`size`** (CSS3)
+
+`size` 属性支持 `auto`、`landscape`、`portrait`、`<length>{1,2}` 和 `<page-size>` 等值。其中 `<page-size>` 比较常用，如：`A3`，`A4`，`A5`，`B4`，`B5` 等，详细尺寸请参考 [ISO 216]。
+
+**`marks`** (CSS3 Working Draft)
+
+**`bleed`** (CSS3 Working Draft)
+
+#### 伪类
+
+页面上下文也支持使用伪类，其中支持的伪类有：`:left`、`:right`、`:first` 和 `:blank`。
 
 **伪类 `:left` 和 `:right`**
 
-需要双面打印时，通常需要将左页和右页设置不同的样式。这时左页和右页可以分别用 `:left` 和 `:right` 来表示。再次强调，**通过 `:left` 和 `:right` 设置左右页面不同样式，并不能代表用户代理会将页面双面排版**
+需要双面打印时，通常需要将左页和右页设置不同的样式（如页边距、页码位置）。这时左页和右页可以分别用 `:left` 和 `:right` 表示。再次强调，**通过 `:left` 和 `:right` 设置左右页面不同样式，并不代表用户代理会将页面双面打印**
 
 ```css
-/* 该例子通过分别设置左页和右页不同的左右页面距，为装订边留出更多的空间 */
+/* 通过分别设置左页和右页不同的左右页面距，为装订边留出更多的空间 */
 
 @page :left {    margin-left: 2.5cm;    margin-right: 2.7cm;}@page :right {    margin-left: 2.7cm;    margin-right: 2.5cm;}
 ```
@@ -106,10 +142,6 @@ CSS 打印无法指定文档是否为双面打印 (Duplex Printing)，是否双�
 伪类 `:first` 用于匹配到文档的第一页。
 
 ```css
-@page {
-    margin: 3.7cm 2.6cm 3.5cm; /* 所有页面边距设置为 3.7cm 2.6cm 3.5cm */
-}
-
 @page :first {
     margin-top: 10cm; /* 首页上页边距设置为 10cm */
 }
@@ -119,7 +151,7 @@ CSS 打印无法指定文档是否为双面打印 (Duplex Printing)，是否双�
 
 ```css
 h1 {
-    break-before: left; /* 一级标题强制分配到左页 */
+    page-break-before: left; /* 一级标题强制分配到右页 */
 }
 
 @page :blank {
@@ -127,7 +159,7 @@ h1 {
         content: "这是空白页";
     }
 }
-```注意，空白页也可能是左页或右页，设置左页或右页的样式也会显示在空白页上，如果不希望显示在空白页上，可以清除这些样式。
+```注意，空白页既可能是左页，又可能是右页，设置左页或右页的样式也会显示在空白页上，如果不希望显示在空白页上，可以清除这些样式。
 
 ```cssh1 {
     break-before: left;
@@ -146,21 +178,58 @@ h1 {
 }
 
 @page :blank {
-    @left-center,
-    @right-center {
+    @left-center, @right-center {
         content: none; /* 如果是空白页则不显示 */
     }
-}```支持的属性有：
+}```
 
-`size`
-`marks`
-`bleed`
+#### `page` (CSS3)
 
-// 待续……
 
-参考链接：<https://www.w3.org/TR/css3-page/>
+## 分页
+
+**`page-break-before`，`page-break-after`，`page-break-inside`** [CSS 2.1]
+
+用于控制元素之前、之后或之中是否分页，**没有生成盒子的块元素不会生效**。
+
+`page-break-before`、`page-break-after` 属性支持 `auto`、`always`、`avoid`、`left`、`right`、`recto` 和 `verso`。
+
+```css
+h2 {
+    page-break-before: always;
+}
+```
+
+- `auto` 默认值，表示既不强制分页也不禁止分页
+- `always`、`avoid` 表示在该元素之前（或之后）强制或禁止分页
+- `left`、`right` 表示在该元素之前（或之后）强制分页，使得下一页出现在左页或右页
+- `recto`、`verso` 页面进度从左至右时，分别与 `right` 和 `left` 一致；反之与 `left` 和 `right` 一致
+
+`page-break-inside` 属性仅支持 `auto` 和 `avoid`，表示在元素内允许或禁止分页。
+
+```css
+thead, tfoot {
+    display: table-row-group;
+}
+thead, tfoot, tr, th, td {
+    page-break-inside: avoid;
+}
+```
+
+**`orphans`，`windows`** (CSS 2.1)
+
+`orphans` 和 `windows` 用于指定在页面的底部或顶部，元素中允许剩余的最少行数，默认为 2 行。
+// 未完待续……
+
+参考链接：
+
+- <https://www.w3.org/TR/CSS21/page.html>
+- <https://www.w3.org/TR/css3-page/>
+- <https://drafts.csswg.org/css-page-3/>
+- <https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Pages>
 
 [Media]: https://www.w3.org/TR/CSS22/media.html
 [Paged Media]: https://www.w3.org/TR/css3-page/#intro
 [Continuous Media]: https://www.w3.org/TR/CSS22/media.html#continuous-media-group
 [Containing Block]: http://www.w3.org/TR/CSS21/visudet.html#containing-block-details
+[ISO 216]: https://en.wikipedia.org/wiki/ISO_216
