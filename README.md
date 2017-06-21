@@ -1,4 +1,4 @@
-Lon's blog
+Lon's Blog <http://lon.im/post/>
 
 # 目录
 
