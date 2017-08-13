@@ -12,7 +12,7 @@
 
 ## 简介
 
-![Chrome 浏览器打印预览](http://cdn.lon.im/static/img/css-print.chrome-print-preview.png)
+![Chrome 浏览器打印预览](//cdn.lon.im/static/img/css-print.chrome-print-preview.png)
 
 本文主要讲解如何使用 CSS 控制打印样式。
 
@@ -22,7 +22,7 @@
 
 页面 (Page Sheet) 是物理介质 (如：纸张) 的表面，它包含可打印区域 (Printable Areas) 和不可打印区域 (Non-printable Areas)。用户代理可以调整文档内容的格式，使其显示在可打印区域。
 
-![页面打印区域和不可打印区域](http://cdn.lon.im/static/img/css-print.page-sheet.png)
+![页面打印区域和不可打印区域](//cdn.lon.im/static/img/css-print.page-sheet.png)
 
 页面盒子 (Page Box) 是一个由长边 (Long Edge) 和短边 (Short Edge) 组成的矩形。长边的方向决定了页面朝向 (Page Orientation)，长边是垂直方向，则页面朝向为纵向 (Portrait Orientation)，反之为横向 (Landscape Orientation)。
 
@@ -32,7 +32,7 @@ CSS 打印无法指定文档是否为双面打印 (Duplex Printing)，是否双�
 
 和 CSS 盒子模型一样，页面盒子模型由外边距 (margin)、边框 (border)、内边距 (padding) 和 内容区域 (content area) 构成。
 
-![页面模型](http://cdn.lon.im/static/img/css-print.page-box.png)
+![页面模型](//cdn.lon.im/static/img/css-print.page-box.png)
 
 其中内容区域和外边距有着特殊的功能：
 
@@ -85,7 +85,7 @@ CSS 打印无法指定文档是否为双面打印 (Duplex Printing)，是否双�
 
 页面的外边距被分成了 16 个页面外边距盒子。每个外边距盒子都有自己的外边距、边框、内边距和内容区域。页面外边距盒子用于创建页眉和页脚，页眉和页脚是页面的一部分，用于补充信息，如页码或标题。
 
-![page-margin-boxes](http://cdn.lon.im/static/img/css-print.page-margin-boxes.png)
+![page-margin-boxes](//cdn.lon.im/static/img/css-print.page-margin-boxes.png)
 
 页面外边距盒子需要在 `@page` 下使用，使用起来和伪类类似，也包含 `content` 属性。
 
