@@ -3,7 +3,7 @@
   "@type": "Article",
   "headline": "很高心没有猝死 - 我的 2016 年总结",
   "name": "report-of-2016",
-  "url": "http://lon.im/post/report-of-2016.html",
+  "url": "https://lon.im/post/report-of-2016.html",
   "dateCreated": "2016-12-31",
   "dateModified": "2017-02-06",
   "datePublished": "2016-12-31"

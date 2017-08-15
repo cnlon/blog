@@ -3,7 +3,7 @@
   "@type": "Article",
   "headline": "CSS 打印",
   "name": "css-print",
-  "url": "http://lon.im/post/css-print.html",
+  "url": "https://lon.im/post/css-print.html",
   "dateCreated": "2017-01-31",
   "datePublished": "2017-01-31",
   "dateModified": "2017-07-11"
