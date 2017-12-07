@@ -107,4 +107,4 @@ PORT=8080
 
 更多实例请参考[这里](https://github.com/cnlon/fuck-env/tree/master/examples/)
 
-[fuck-env](https://github.com/cnlon/fuck-env) 致力于解决用户管理环境变量时遇到的各种问题，目前还处于 Beta 阶段，未来会加入更多人性化设计。如果你有任何想法，欢迎[给项目提出宝贵的建议](https://github.com/cnlon/fuck-env/issues)。
+[fuck-env](https://github.com/cnlon/fuck-env) 致力于解决用户管理环境变量时遇到的各种问题，未来会加入更多人性化设计。如果你有任何想法，欢迎[给项目提出宝贵的建议](https://github.com/cnlon/fuck-env/issues)。
